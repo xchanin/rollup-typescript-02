@@ -1,17 +1,19 @@
 /**
- * Merges the enumerable properties of two or more objects deeply 
+ * Merges the enumerable properties of two or more objects deeply
  */
 import merge from 'deepmerge';
 
 /**
  * Copy files and folders, with glob support
  */
- import copy from 'rollup-plugin-copy';
+//  import copy from 'rollup-plugin-copy';
 
 /**
  * Bundle style files
  */
-import postcss from 'rollup-plugin-postcss';
+// import postcss from 'rollup-plugin-postcss';
+
+import scss from "rollup-plugin-scss";
 
 // use createSpaConfig for bundling a Single Page App
 import { createSpaConfig } from '@open-wc/building-rollup';
@@ -36,13 +38,14 @@ const baseConfig = createSpaConfig({
 
 export default merge(baseConfig, {
   plugins: [
-    copy({
-      targets: [{ src: './assets/**/*', dest: './dist' }], // copy everything from assets folder
-      flatten: false, // set flatten to false to preserve folder structure
+    // copy({
+    //   targets: [{ src: './assets/**/*', dest: './dist' }], // copy everything from assets folder
+    //   flatten: false, // set flatten to false to preserve folder structure
+    // }),
+    scss({
+      output: "./dist/assets/styles.css",
+      failOnError: true,
     }),
-    postcss({
-      plugins: []
-    })
   ],
   // if you use createSpaConfig, you can use your index.html as entrypoint,
   // any <script type="module"> inside will be bundled by rollup

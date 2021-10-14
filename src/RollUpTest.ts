@@ -1,6 +1,5 @@
 import { html, css, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-import './style.css';
 
 export class RollUpTest extends LitElement {
   static styles = css`
