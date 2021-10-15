@@ -1,0 +1,16 @@
+/**
+* Sass styles
+**/
+$background-color: rgb(138, 44, 226);
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+  background-color: $background-color;
+}

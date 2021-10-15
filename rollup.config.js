@@ -6,7 +6,7 @@ import merge from 'deepmerge';
 /**
  * Copy files and folders, with glob support
  */
-//  import copy from 'rollup-plugin-copy';
+import copy from 'rollup-plugin-copy';
 
 /**
  * Bundle style files
@@ -15,10 +15,17 @@ import merge from 'deepmerge';
 
 import scss from "rollup-plugin-scss";
 
-// use createSpaConfig for bundling a Single Page App
+
+import typescript from 'rollup-plugin-typescript2';
+
+/**
+ * Use createSpaConfig for bundling a Single Page App
+ */
 import { createSpaConfig } from '@open-wc/building-rollup';
 
-// use createBasicConfig to do regular JS to JS bundling
+/**
+ * Use createBasicConfig to do regular JS to JS bundling
+ */
 // import { createBasicConfig } from '@open-wc/building-rollup';
 
 const baseConfig = createSpaConfig({
@@ -36,22 +43,97 @@ const baseConfig = createSpaConfig({
   injectServiceWorker: false,
 });
 
+
 export default merge(baseConfig, {
+  /**
+   * if you use createSpaConfig, you can use your index.html as entrypoint,
+   * any <script type="module"> inside will be bundled by rollup
+   */
+   input: './demo/index.html',
+
+   /**
+    * alternatively, you can use your JS as entrypoint for rollup and
+    * optionally set a HTML template manually
+    */
+   // input: './app.js',
+
   plugins: [
-    // copy({
-    //   targets: [{ src: './assets/**/*', dest: './dist' }], // copy everything from assets folder
-    //   flatten: false, // set flatten to false to preserve folder structure
-    // }),
+    typescript(),
+    /**
+     * Copy assets to the dist folder, in this case just the images
+     * 
+     * Set flatten to false to preserve folder structure
+     */
+    copy({
+      targets: [{ src: './assets/images/**/*', dest: './dist' }],
+      flatten: false,
+    }),
+
+    /**
+     * Output .scss to .css in the dist folder
+     * .scss file should sit in the entry file
+     */
     scss({
-      output: "./dist/assets/styles.css",
+      
+      /**
+       * Minify css output
+       */
+      outputStyle: 'compressed',
+
+      /**
+       * File types to include - this is an example, as these are
+       * the default values
+       */
+      include: ["/**/*.css", "/**/*.scss", "/**/*.sass"],
+
+      
+      /**
+       * Filename to write all styles to
+       */
+      output: "./dist/assets/main-styles.min.css",
+      
+      /**
+       * Determine if node process should be terminated on error (default: false)
+       */
       failOnError: true,
+
+      /**
+       * Enables/disables generation of source map (default: false)
+       */
+      sourceMap: true,
+
+      /**
+       * Sass compiler to use
+       * - sass and node-sass packages are picked up autmatically
+       */
+      sass: require('node-sass'),
+
+      /**
+       * Run postcss processor before output
+       * @returns 
+       */
+      processor: () => postcss([autoprefixer({ overrideBrowserslist: 'Edge 18' })]),
+   
+      /**
+       * Process resulting .css
+       * @param {*} css 
+       * @param {*} map 
+       * @returns 
+       */
+      processor: (css, map) => ({
+        css: css.replace('/*date*/', '/* ' + new Date().toJSON() + ' */'),
+        map
+      }),
+
+      /**
+       * Log filename and size of generated CSS files (default: true)
+       */
+      verbose: true,
+
+      /**
+       * Watch files/folder for changes, triggers a rebuild
+       */
+      watch: ['assets']
     }),
   ],
-  // if you use createSpaConfig, you can use your index.html as entrypoint,
-  // any <script type="module"> inside will be bundled by rollup
-  input: './demo/index.html',
-
-  // alternatively, you can use your JS as entrypoint for rollup and
-  // optionally set a HTML template manually
-  // input: './app.js',
 });

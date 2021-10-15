@@ -1,6 +1,7 @@
 import { html, css, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
-
+// import '../../assets/main-styles.scss';
+import styles from '../../assets/main-styles.scss'
 export class RollUpTest extends LitElement {
   static styles = css`
     :host {
@@ -11,7 +12,6 @@ export class RollUpTest extends LitElement {
   `;
 
   @property({ type: String }) title = 'Hey there';
-
   @property({ type: Number }) counter = 5;
 
   __increment() {
