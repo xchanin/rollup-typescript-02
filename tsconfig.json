@@ -17,5 +17,5 @@
     "incremental": true,
     
   },
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "./src/types/*.d.ts"]
 }

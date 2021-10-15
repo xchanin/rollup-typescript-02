@@ -90,7 +90,7 @@ export default merge(baseConfig, {
       /**
        * Filename to write all styles to
        */
-      output: "./dist/assets/main-styles.min.css",
+      output: "./dist/assets/styles/main-styles.min.css",
       
       /**
        * Determine if node process should be terminated on error (default: false)
@@ -133,7 +133,7 @@ export default merge(baseConfig, {
       /**
        * Watch files/folder for changes, triggers a rebuild
        */
-      watch: ['assets']
+      watch: ['./assets/styles']
     }),
   ],
 });

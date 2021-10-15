@@ -1,0 +1,31 @@
+/**
+* Sass styles
+**/
+$background-color: rgb(138, 44, 226);
+$font-family: 'Rokkitt', serif;
+
+:root {
+  --theme-font-family: 'Rokkitt', serif;
+}
+
+.flexbox-base {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  @extend .flexbox-base;
+  margin: 0px;
+  padding: 0px;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: $font-family;
+  background-color: $background-color;
+}
