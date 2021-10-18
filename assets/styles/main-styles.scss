@@ -1,11 +1,12 @@
 /**
 * Sass styles
 **/
-$background-color: rgb(138, 44, 226);
+$background-color: rgb(18, 30, 199);
 $font-family: 'Rokkitt', serif;
 
 :root {
   --theme-font-family: 'Rokkitt', serif;
+  --background-color: rgb(18, 148, 199);
 }
 
 .flexbox-base {
@@ -25,7 +26,9 @@ html, body {
   padding: 0px;
   width: 100vw;
   height: 100vh;
+  
   overflow: hidden;
   font-family: $font-family;
-  background-color: $background-color;
+  background-color: var(--background-color);
+
 }

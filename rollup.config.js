@@ -1,4 +1,14 @@
 /**
+ * Package.json file
+ */
+import pkg from './package.json';
+
+/**
+ * transpile newer JS code for older JS browsers
+ */
+ import babel from 'rollup-plugin-babel';
+
+/**
  * Merges the enumerable properties of two or more objects deeply
  */
 import merge from 'deepmerge';
@@ -15,13 +25,29 @@ import copy from 'rollup-plugin-copy';
 
 import scss from "rollup-plugin-scss";
 
-
+/**
+ * Plugin inherits all compiler options and file lists from your tsconfig.json file
+ */
 import typescript from 'rollup-plugin-typescript2';
 
 /**
  * Use createSpaConfig for bundling a Single Page App
  */
 import { createSpaConfig } from '@open-wc/building-rollup';
+
+/**
+ * Load third party modules from node_modules
+ */
+ import resolve from 'rollup-plugin-node-resolve';
+
+ /**
+  * Transpile CommonJS to newer JS
+  */
+ import commonjs from 'rollup-plugin-node-resolve';
+
+ const extensions = [
+  '.js', '.jsx', '.ts', '.tsx',
+];
 
 /**
  * Use createBasicConfig to do regular JS to JS bundling
@@ -49,7 +75,7 @@ export default merge(baseConfig, {
    * if you use createSpaConfig, you can use your index.html as entrypoint,
    * any <script type="module"> inside will be bundled by rollup
    */
-   input: './demo/index.html',
+   input: pkg.entryfile,
 
    /**
     * alternatively, you can use your JS as entrypoint for rollup and
@@ -58,6 +84,26 @@ export default merge(baseConfig, {
    // input: './app.js',
 
   plugins: [
+    /**
+     * Compile TypeScript / JavaScript files
+     */
+    babel({
+      babelrc: true,
+      extensions, 
+      include: ['src/**/*'],
+      exclude: 'node_modules/**' // don't transpile someone else's code
+    }),
+
+    /**
+     * Allow bundling cjs modules. Rollup doesn't understand cjs
+     */
+    commonjs(),
+
+    /**
+     * Allow node_modules resolution
+     */
+    resolve({ extensions }),
+
     typescript(),
     /**
      * Copy assets to the dist folder, in this case just the images
@@ -78,7 +124,7 @@ export default merge(baseConfig, {
       /**
        * Minify css output
        */
-      outputStyle: 'compressed',
+      outputStyle: pkg.sasscompressed,
 
       /**
        * File types to include - this is an example, as these are
@@ -90,7 +136,7 @@ export default merge(baseConfig, {
       /**
        * Filename to write all styles to
        */
-      output: "./dist/assets/styles/main-styles.min.css",
+      output: pkg.sassoutput,
       
       /**
        * Determine if node process should be terminated on error (default: false)
@@ -131,9 +177,9 @@ export default merge(baseConfig, {
       verbose: true,
 
       /**
-       * Watch files/folder for changes, triggers a rebuild
+       * Watch files/folder for changes - triggers a rebuild
        */
-      watch: ['./assets/styles']
+      // watch: './src/assets/styles/main-styles.scss'
     }),
   ],
 });
