@@ -6,7 +6,7 @@
   "version": "0.0.0",
   "entryfile": "./demo/index.html",
   "sasscompressed": true,
-  "sassoutput": "./dist/assets/styles/main-styles.min.css",
+  "sassoutput": "./dist/assets/styles/global-scss.min.css",
   "module": "dist/src/index.js",
   "exports": {
     ".": "./dist/src/index.js",

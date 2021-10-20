@@ -69,7 +69,6 @@ const baseConfig = createSpaConfig({
   injectServiceWorker: false,
 });
 
-
 export default merge(baseConfig, {
   /**
    * if you use createSpaConfig, you can use your index.html as entrypoint,
@@ -104,14 +103,22 @@ export default merge(baseConfig, {
      */
     resolve({ extensions }),
 
-    typescript(),
+    typescript( {
+      transform(code, id) {
+        return code.replace(/\/\*\* @class \*\//g, "\/*@__PURE__*\/");
+      }
+    }),
     /**
      * Copy assets to the dist folder, in this case just the images
      * 
      * Set flatten to false to preserve folder structure
      */
     copy({
-      targets: [{ src: './assets/images/**/*', dest: './dist' }],
+      targets: 
+      [
+        { src: './assets/images/**/*', dest: './dist' },
+        { src: './assets/styles/css/**/*', dest: './dist' }
+      ],
       flatten: false,
     }),
 
@@ -182,4 +189,11 @@ export default merge(baseConfig, {
       // watch: './src/assets/styles/main-styles.scss'
     }),
   ],
+  // I'm not sure this output is neccessary, just doing this to test 
+  // tree shaking typescript.
+  // this actually breaks the build
+  // output: {
+  //   dir: "./asdfsdfs",
+  //   format: 'es'
+  // }
 });

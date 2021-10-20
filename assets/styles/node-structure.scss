@@ -1,0 +1,167 @@
+@import './global-scss.scss';
+
+.parent-drawflow {
+  display: flex;
+  overflow: hidden;
+  touch-action: none;
+  outline:none;
+}
+
+/**
+* Canvas
+*/
+.drawflow {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  user-select: none;
+
+  // .input, .output { 
+  //   position: absolute;
+  //   left: 50%;
+  //   width: var(--node-size);
+  //   height: var(--node-size);
+  //   background: white;
+  //   border-radius: 50%;
+  //   border: 2px solid black;
+  //   cursor: crosshair;
+  //   z-index: 5000;
+  //   transform: translate(-50%, 0);
+  // }
+
+  // .input {
+  //   top: calc(5px - var(--node-size));
+  //   background-color: var(--node-input-color);
+  // }
+
+  // .output {
+  //   bottom: calc(5px - var(--node-size));
+  //   background-color: var(--node-output-color);
+  // }
+
+  .fathym-node {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 2;
+    // transition: 0.5s;
+    // padding: 15px;
+    // @include box-shadow;
+
+    &.selected {
+      // transition: 0.5s;
+      filter: brightness(1.25);
+      -webkit-filter: brightness(1.25);
+      // border: 1px solid #4ea9ff;
+      // -webkit-box-shadow: 0 2px 20px 2px #4ea9ff;
+      // box-shadow: 0 2px 20px 2px #4ea9ff;
+    }
+
+    &:hover {
+      cursor: move;
+      // transition: 0.5s;
+      // filter: grayscale(1.25);
+      // -webkit-filter: grayscale(1.25);
+    }
+
+    /**
+    * Items that sit inside nodes
+    */
+    .drawflow_content_node {
+    
+      // background-color: cadetblue;
+    }
+
+    .inputs, .outputs {
+      @extend .flexbox-base;
+      flex-direction: row;
+      position: absolute;
+      // left: 50%;
+      z-index: 2;
+    }
+
+    .inputs {
+      top: calc(5px - var(--node-size));
+    }
+
+    .outputs {
+      bottom: calc(5px - var(--node-size));
+    }
+
+    .input, .output { 
+      width: var(--node-size);
+      height: var(--node-size);
+      background: white;
+      border-radius: 50%;
+      border: 2px solid black;
+      cursor: crosshair;
+      // transform: translate(-50%, 0);
+      margin: 0px 5px;
+
+      &:hover {
+        background-color: greenyellow;
+      }
+    }
+  
+    .input {
+      // top: calc(5px - var(--node-size));
+      background-color: var(--node-input-color);
+    }
+  
+    .output {
+      // bottom: calc(5px - var(--node-size));
+      background-color: var(--node-output-color);
+    }
+  }
+
+/**
+* Parent to clipped path elements
+*
+* Use this so we can have drop shadows on clipped paths
+*/
+.node-drop-shadow {
+  filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.25));
+}
+
+.parent-node {
+  position: relative;
+}
+
+  // > .drawflow-delete {
+  //   margin-left: -15px;
+  //   margin-top: 15px;
+  // }
+}
+
+.drawflow-delete {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background: var(--node-delete);
+  color: white;
+  z-index: 4;
+  font-size: large;
+  border: 2px solid white;
+  line-height: 0;
+  font-weight: bold;
+  border-radius: 50%;
+  font-family: monospace;
+  cursor: pointer;
+}
+
+// .drawflow > .drawflow-delete {
+//   margin-left: -15px;
+//   margin-top: 15px;
+// }
+
+/**
+* Position of delete icon
+*/
+.parent-node .drawflow-delete {
+  right: -15px;
+  top: -15px;
+}
