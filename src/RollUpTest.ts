@@ -19,13 +19,13 @@ export class RollUpTest extends LitElement {
     this.Counter = 5;
   }
 
-  static styles = css`
-    :host {
-      display: block;
-      padding: 25px;
-      color: var(--roll-up-test-text-color, #000);
-    }
-  `;
+  // static styles = css`
+  //   :host {
+  //     display: block;
+  //     padding: 25px;
+  //     color: var(--roll-up-test-text-color, #000);
+  //   }
+  // `;
 
   __increment() {
     this.Counter += 1;
@@ -41,6 +41,8 @@ export class RollUpTest extends LitElement {
   // }
   render() {
     return html `
+      <link rel="stylesheet" href="./assets/styles/global-scss.min.css">
+      <link rel="stylesheet" href="./assets/styles/css/app.css">
       <template id="request">
         <div class="node-drop-shadow">
           <div class="gap flexbox-row request">
@@ -103,7 +105,7 @@ export class RollUpTest extends LitElement {
     </div>
 
     <header class="my-header-class">
-      <h2>Data Flow Tool</h2>
+      <h2>Data Flow Tools</h2>
     </header>
 
     <div class="wrapper">

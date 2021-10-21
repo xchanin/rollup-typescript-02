@@ -1,4 +1,10 @@
 /**
+* Style Type
+*
+* Main Structural Styles
+*/
+
+/**
 * Main container wrapper
 */
 .wrapper {
@@ -43,10 +49,6 @@ header {
     height: 66px;
     border-bottom: 1px solid var(--border-color);
     padding-left: 20px;
-}
-
-.my-header-class {
-    background-color: red;
 }
 
 header h2 {
