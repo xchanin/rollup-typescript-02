@@ -14,7 +14,7 @@
   width: calc(100vw - 301px);
   height: calc(100% - 50px);
   top: 40px;
-  background: var(--background-color);
+  background: var(--canvas-background-color);
   background-size: 25px 25px;
   /*
     * background grid lines

@@ -18,7 +18,6 @@ export class DragDropUtils {
      * @param e DragEvent
      */
     public static Drag(e: DragEvent): void {
-
         const target: HTMLElement = <HTMLElement>e.target;
         const closest: HTMLElement = <HTMLElement>target.closest('.drag-item');
 

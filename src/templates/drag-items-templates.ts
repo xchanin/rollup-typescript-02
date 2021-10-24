@@ -113,7 +113,7 @@ export class DragItemsTemplates {
        ];
     } 
 
-    public static FLOW_DRAG_ITEMS(callback: () => {}): Array<any> {
+    public static FLOW_DRAG_ITEMS(callback?: () => {}): Array<any> {
        return [
            {
                ClassList: ['drag-item'],

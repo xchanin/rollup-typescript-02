@@ -3,35 +3,40 @@
  
 <head>
   <meta charset="utf-8">
-  <!-- <style>
-    body {
-      background: #fafafa;
-    }
-  </style> -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-  <!-- <link rel="stylesheet" href="../assets/styles/css/app.css"> -->
   <link rel="stylesheet" href="../assets/styles/global-scss.min.css">
 </head>
 <body>
   <div id="demo"></div>
-
   <script type="module">
     import { html, render } from 'lit';
-    import { Variables, ConstantUtils } from '../dist/src/index.js';
+    import { 
+      FlowTool,
+      MenuTemplatesUtils,
+      VariablesUtils,
+      EventsUtils,
+      ConstantUtils,
+      NodeTemplates,
+      DragItemsTemplates,
+      PositionUtils,
+      DragDropUtils } from '../dist/src/index.js';
     import '../dist/src/roll-up-test.js';
 
     /**
      * Array for storing module data
     */
-
     const DefaultData = ConstantUtils.NAPKIN_IDE_MODULE_DATA;
     const title = 'Hello World!';
+
+    VariablesUtils.NodeClass = 'fathym-node';
   
     render(
       html`
         <roll-up-test 
-          FlowData=${ DefaultData } 
-          title=${ title }>
+          HeaderTitle = "Data Flow Tools"
+          .FlowData = ${ DefaultData } 
+          .SideMenuItems = ${ DragItemsTemplates.FLOW_DRAG_ITEMS(DragDropUtils.Test) }
+          .title = ${ title }>
           some light-dom
         </roll-up-test>
       `,
