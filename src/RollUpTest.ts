@@ -1,10 +1,10 @@
-import { FlowTool } from './controls/FlowTool';
-import { VariablesUtils } from './utils/variables.utils';
 import { html, LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
+import { query } from 'lit/decorators/query.js';
 import { DataFlowDataModel } from './models/dataflow-data.model';
+import { FlowTool } from './controls/FlowTool';
+import { VariablesUtils } from './utils/variables.utils';
 import { DragDropUtils } from './utils/drag-drop.utils';
-import {query} from 'lit/decorators/query.js';
 import { PositionUtils } from './utils/position.utils';
 import { NodeTemplates } from './templates/node-templates';
 export class RollUpTest extends LitElement {
@@ -529,11 +529,12 @@ export class RollUpTest extends LitElement {
         -->
         <canvas-control 
           id="drawflow"
+          class="drawflow"
           @drop="${ (e: DragEvent) => this.dragEvent('drop', e) }" 
           @dragover="${ (e: DragEvent) => this.dragEvent('dragover', e) }">
 
           <p>This is the Canvas</p>
-          
+
         </canvas-control>
       </div>
     </div>

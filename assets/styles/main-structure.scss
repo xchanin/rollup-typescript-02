@@ -7,6 +7,7 @@
 /**
 * Main container wrapper
 */
+:host {
 .wrapper {
     width: 100%;
     height: calc(100vh - 67px);
@@ -16,7 +17,7 @@
 /**
 * Main canvas where we drag nodes to
 */
-#drawflow {
+#drawflow, .drawflow {
     position: relative;
     width: calc(100vw - 301px);
     height: calc(100% - 50px);
@@ -98,4 +99,5 @@ header a {
 
 .tab-menu ul li.selected {
     font-weight: bold;
+}
 }
