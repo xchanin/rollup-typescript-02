@@ -14,23 +14,23 @@ export const TestNapkinIDEConfig: any = {
     request: {
       AllowedOutputTypes: ['PROJECT'],
       ClassList: ['entry-node'],
-      HTMLTemplateID: 'request-template',
+      HTMLTemplateID: 'RequestTemplate',
       InputCountLimit: 1,
     },
     project: {
       AllowedInputTypes: ['REQUEST'],
-      HTMLTemplateID: 'project-template',
+      HTMLTemplateID: 'ProjectTemplate',
       InputCountLimit: 1,
     },
     'route-filter': {
       AllowedInputTypes: ['PROJECT'],
       AllowedOutputTypes: ['APPLICATION'],
-      HTMLTemplateID: 'route-template',
+      HTMLTemplateID: 'RouteTemplate',
     },
     application: {
       AllowedInputTypes: ['ROUTE_FILTER'],
       ClassList: ['exit-node'],
-      HTMLTemplateID: 'application-template',
+      HTMLTemplateID: 'ApplicationTemplate',
       OutputCountLimit: 0,
     },
   },
@@ -209,7 +209,7 @@ export class ConstantUtils {
             Connections: [],
           },
         },
-        HTML: NodeTemplates.Project, // this calls an HTML string
+        HTML: NodeTemplates.ProjectTemplate, // this calls an HTML string
         TypeNode: false,
       },
       // {
@@ -228,6 +228,10 @@ export class ConstantUtils {
   };
 
   static count: number = 0;
+
+  protected static getProperty<T, K extends keyof T>(o: T, propertyName: K): T[K] {
+    return o[propertyName];
+  }
 
   public static NAPKIN_IDE_MODULE_DATA: DataFlowDataModel = {
     Module: 'NapkinIDE',
@@ -248,12 +252,16 @@ export class ConstantUtils {
         return edge.Outputs
       });
 
+      console.log('CONSTANT TEMPLATE');
+
+      // HTML: <string>document.getElementById(<string>config.HTMLTemplateID)?.innerHTML
+
       return <NodeModel> {
         AllowedInputTypes: config.AllowedInputTypes,
         AllowedOutputTypes: config.AllowedOutputTypes,
         ClassList: node.ClassList,
         Data: node.Data,
-        HTML: <string>document.getElementById(<string>config.HTMLTemplateID)?.innerHTML,
+        HTML: this.getProperty(NodeTemplates, config.HTMLTemplateID),
         ID: `${++ConstantUtils.count}`,
         Inputs: inputs[0],
         NodeType: node.Type.toUpperCase(),
@@ -289,7 +297,7 @@ export class ConstantUtils {
         Name: 'slack',
         Data: {},
         ClassList: ['slack'],
-        HTML: NodeTemplates.Slack,
+        HTML: NodeTemplates.SlackTemplate,
         TypeNode: false,
         NumOfInputs: 0,
         NumOfOutputs: 1,
@@ -313,7 +321,7 @@ export class ConstantUtils {
           channel: 'channel_2',
         },
         ClassList: ['telegram'],
-        HTML: NodeTemplates.Telegram,
+        HTML: NodeTemplates.TelegramTemplate,
         TypeNode: false,
         Inputs: {
           input_1: {
@@ -335,7 +343,7 @@ export class ConstantUtils {
         Name: 'email',
         Data: {},
         ClassList: ['email'],
-        HTML: NodeTemplates.Email,
+        HTML: NodeTemplates.EmailTemplate,
         TypeNode: false,
         Inputs: {
           input_1: {
@@ -361,7 +369,7 @@ export class ConstantUtils {
           template: 'Write your template',
         },
         ClassList: ['template'],
-        HTML: NodeTemplates.Template,
+        HTML: NodeTemplates.TemplateTemplate,
         TypeNode: false,
         NumOfInputs: 0,
         NumOfOutputs: 1,
@@ -390,7 +398,7 @@ export class ConstantUtils {
           name: 'https://github.com/jerosoler/Drawflow',
         },
         ClassList: ['github'],
-        HTML: NodeTemplates.Github,
+        HTML: NodeTemplates.GithubTemplate,
         TypeNode: false,
         NumOfInputs: 0,
         NumOfOutputs: 1,
@@ -412,7 +420,7 @@ export class ConstantUtils {
         Name: 'facebook',
         Data: {},
         ClassList: ['facebook'],
-        HTML: NodeTemplates.Facebook,
+        HTML: NodeTemplates.FacebookTemplate,
         TypeNode: false,
         NumOfInputs: 0,
         NumOfOutputs: 1,
@@ -482,7 +490,7 @@ export class ConstantUtils {
         Name: 'log',
         Data: {},
         ClassList: ['log'],
-        HTML: NodeTemplates.Log,
+        HTML: NodeTemplates.LogTemplate,
         TypeNode: false,
         NumOfInputs: 0,
         NumOfOutputs: 1,

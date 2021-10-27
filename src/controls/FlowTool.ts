@@ -24,77 +24,82 @@ export class FlowTool extends DataFlowBaseClass {
          VariablesUtils.Render = render;
          VariablesUtils.MainContainer = container;
  
-         this.eventListeners = [
-             {
-                 Event: 'mouseup', 
-                 Action: this.DragEnd.bind(this)
-             },
-             {
-                 Event: 'mousemove', 
-                 Action: this.Position.bind(this)
-             },
-             {
-                 Event: 'mousedown', 
-                 Action: this.Click.bind(this)
-             },
-             {
-                 Event: 'touchend', 
-                 Action: this.DragEnd.bind(this)
-             },
-             {
-                 Event: 'touchmove', 
-                 Action: this.Position.bind(this)
-             },
-             {
-                 Event: 'touchstart', 
-                 Action: this.Click.bind(this)
-             },
-             {
-                 Event: 'contextmenu', 
-                 Action: this.Contextmenu.bind(this)
-             },
-             {
-                 Event: 'keydown', 
-                 Action: this.KeyDown.bind(this)
-             },
-             {
-                 Event: 'wheel', 
-                 Action: this.Zoom_Enter.bind(this)
-             },
-             {
-                 Event: 'input', 
-                 Action: this.UpdateNodeValue.bind(this)
-             },
-             {
-                 Event: 'dblclick', 
-                 Action: this.DblClick.bind(this)
-             },
-             {
-                 Event: 'onpointerdown',
-                 Action: this.PointerDown.bind(this)
-             },
-             {
-                 Event: 'onpointermove',
-                 Action: this.PointerMove.bind(this)
-             },
-             {
-                 Event: 'onpointerup',
-                 Action: this.PointerUp.bind(this)
-             },
-             {
-                 Event: 'onpointercancel',
-                 Action: this.PointerUp.bind(this)
-             },
-             {
-                 Event: 'onpointerout',
-                 Action: this.PointerUp.bind(this)
-             },
-             {
-                 Event: 'onpointerleave',
-                 Action: this.PointerUp.bind(this)
-             }
-         ]
+         this.setEventListeners();
      }
+
+     protected setEventListeners(): void {
+      this.eventListeners = [
+        {
+            Event: 'mouseup', 
+            Action: this.DragEnd.bind(this)
+        },
+        {
+            Event: 'mousemove', 
+            Action: this.Position.bind(this)
+        },
+        {
+            Event: 'mousedown', 
+            Action: this.Click.bind(this)
+        },
+        {
+            Event: 'touchend', 
+            Action: this.DragEnd.bind(this)
+        },
+        {
+            Event: 'touchmove', 
+            Action: this.Position.bind(this)
+        },
+        {
+            Event: 'touchstart', 
+            Action: this.Click.bind(this)
+        },
+        {
+            Event: 'contextmenu', 
+            Action: this.Contextmenu.bind(this)
+        },
+        {
+            Event: 'keydown', 
+            Action: this.KeyDown.bind(this)
+        },
+        {
+            Event: 'wheel', 
+            Action: this.Zoom_Enter.bind(this)
+        },
+        {
+            Event: 'input', 
+            Action: this.UpdateNodeValue.bind(this)
+        },
+        {
+            Event: 'dblclick', 
+            Action: this.DblClick.bind(this)
+        },
+        {
+            Event: 'onpointerdown',
+            Action: this.PointerDown.bind(this)
+        },
+        {
+            Event: 'onpointermove',
+            Action: this.PointerMove.bind(this)
+        },
+        {
+            Event: 'onpointerup',
+            Action: this.PointerUp.bind(this)
+        },
+        {
+            Event: 'onpointercancel',
+            Action: this.PointerUp.bind(this)
+        },
+        {
+            Event: 'onpointerout',
+            Action: this.PointerUp.bind(this)
+        },
+        {
+            Event: 'onpointerleave',
+            Action: this.PointerUp.bind(this)
+        }
+    ]
+     }
+
     /**
       * Start creating nodes
       */

@@ -199,6 +199,8 @@ export class NodeBaseClass extends BaseFunctions {
         const content = document.createElement('div');
         content.classList.add('drawflow_content_node');
 
+        console.log('STOP');
+
         // if(dataNode.TypeNode === false
         if (dataNode.TypeNode === false) {
             content.innerHTML = dataNode.HTML.toString();

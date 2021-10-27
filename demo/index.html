@@ -25,16 +25,25 @@
     /**
      * Array for storing module data
     */
-    const DefaultData = ConstantUtils.NAPKIN_IDE_MODULE_DATA;
+
+    VariablesUtils.DataFlowModuleData =
+    [
+      // ConstantUtils.TEST_MODULE,
+      ConstantUtils.NAPKIN_IDE_MODULE_DATA,
+      // ConstantUtils.HOME_MODULE_DATA
+      // ConstantUtils.OTHER_MODULE_DATA
+      
+    ];
     const title = 'Hello World!';
 
     VariablesUtils.NodeClass = 'fathym-node';
-  
+    VariablesUtils.ActtiveModule = ConstantUtils.NAPKIN_IDE_MODULE_DATA.Module;
+
     render(
       html`
         <roll-up-test 
           HeaderTitle = "Data Flow Tools"
-          .FlowData = ${ DefaultData } 
+          .FlowData = ${ VariablesUtils.DataFlowModuleData[0] } 
           .SideMenuItems = ${ DragItemsTemplates.FLOW_DRAG_ITEMS(DragDropUtils.Test) }
           .title = ${ title }>
           some light-dom

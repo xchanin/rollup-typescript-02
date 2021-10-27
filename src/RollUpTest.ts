@@ -12,17 +12,33 @@ export class RollUpTest extends LitElement {
   @property({ type: Number }) 
   public Counter: number;
 
+  @query('#drawflow')
+  public Canvas: HTMLElement;
+
   @query('#drag-items')
   public DragItems: HTMLElement;
   
+  @state()
+  private _flowData: DataFlowDataModel;
+  // public FlowData: DataFlowDataModel;
   @property({ type: DataFlowDataModel }) 
-  public FlowData: DataFlowDataModel;
+  public set FlowData(val: DataFlowDataModel) {
+    this._flowData = val;
 
-  // @property({ type: FlowTool })
-  // public FlowTool: FlowTool;
+    // this.flowTool = new FlowTool(this.Canvas);
+    // this.flowTool.Init(val);
+  }
+
+  public get FlowData(): DataFlowDataModel {
+    return this._flowData;
+  }
 
   @property({ type: String })
   public HeaderTitle: string;
+
+  public get Root(): ShadowRoot | RollUpTest {
+    return this.shadowRoot || this;
+  }
 
   @property({ type: Array })
   public SideMenuItems: Array<any>
@@ -34,8 +50,8 @@ export class RollUpTest extends LitElement {
    * Internal reactive state refers to properties that aren't
    * part of the component's API. Typically marked protected or private
    */
-  @state()
-  protected canvas: HTMLElement;
+  // @state()
+  // protected canvas: HTMLElement;
   
   @state()
   protected flowTool: any;
@@ -43,12 +59,17 @@ export class RollUpTest extends LitElement {
   constructor() {
     super();
 
+    // this.renderComplete.then(() => {
+
+    // })
+
     /**
      * 
      * Set default value - overridden with passed in value
      */
-    this.canvas = document.getElementById("drawflow");
-    this.flowTool = new FlowTool(this.canvas);
+    // this.canvas = document.getElementById("drawflow");
+    this.flowTool = new FlowTool(this.Canvas);
+    
     this.Title = 'This is a component';
     this.Counter = 5;
   }
@@ -80,7 +101,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: [], 
             Data: {}, 
-            HTML: NodeTemplates.Request,
+            HTML: NodeTemplates.RequestTemplate,
             // HTML: document.getElementById('request').content,
             TypeNode: false
           }
@@ -107,7 +128,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: [], 
             Data: {}, 
-            HTML: NodeTemplates.Project,
+            HTML: NodeTemplates.ProjectTemplate,
             TypeNode: false
           }
         );
@@ -123,7 +144,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: [], 
             Data: {}, 
-            HTML: NodeTemplates.Filter,
+            HTML: NodeTemplates.RouteTemplate,
             TypeNode: false
           }
         );
@@ -139,7 +160,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: [], 
             Data: {}, 
-            HTML: NodeTemplates.Application,
+            HTML: NodeTemplates.ApplicationTemplate,
             TypeNode: false
           }
         );
@@ -155,7 +176,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: [], 
             Data: {}, 
-            HTML: NodeTemplates.Modifier,
+            HTML: NodeTemplates.ModifierTemplate,
             TypeNode: false
           }
         );
@@ -171,7 +192,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: [], 
             Data: {}, 
-            HTML: NodeTemplates.Join,
+            HTML: NodeTemplates.JoinTemplate,
             TypeNode: false
           }
         );
@@ -187,7 +208,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: [], 
             Data: {}, 
-            HTML: NodeTemplates.Split,
+            HTML: NodeTemplates.SplitTemplate,
             TypeNode: false
           }
         );
@@ -203,7 +224,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: [], 
             Data: {}, 
-            HTML: NodeTemplates.Decision,
+            HTML: NodeTemplates.DecisionTemplate,
             TypeNode: false
           }
         );
@@ -219,7 +240,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: [], 
             Data: {}, 
-            HTML: NodeTemplates.Event,
+            HTML: NodeTemplates.EventTemplate,
             TypeNode: false
           }
         );
@@ -235,7 +256,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['facebook'], 
             Data: {}, 
-            HTML: NodeTemplates.Facebook,
+            HTML: NodeTemplates.FacebookTemplate,
             TypeNode: false
           }
         );
@@ -251,7 +272,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['slack'], 
             Data: {}, 
-            HTML: NodeTemplates.Slack,
+            HTML: NodeTemplates.SlackTemplate,
             TypeNode: false
           }  
         );
@@ -267,7 +288,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['github'], 
             Data: {}, 
-            HTML: NodeTemplates.Github,
+            HTML: NodeTemplates.GithubTemplate,
             TypeNode: false
           }
         );
@@ -283,7 +304,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['telegram'], 
             Data: {}, 
-            HTML: NodeTemplates.Telegram,
+            HTML: NodeTemplates.TelegramTemplate,
             TypeNode: false
           }
         );
@@ -299,7 +320,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['aws'], 
             Data: {}, 
-            HTML: NodeTemplates.AWS,
+            HTML: NodeTemplates.AWSTemplate,
             TypeNode: false
           }
         );
@@ -315,7 +336,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['log'], 
             Data: {}, 
-            HTML: NodeTemplates.Log,
+            HTML: NodeTemplates.LogTemplate,
             TypeNode: false
           }
         );
@@ -331,7 +352,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['google'], 
             Data: {}, 
-            HTML: NodeTemplates.Google,
+            HTML: NodeTemplates.GoogleTemplate,
             TypeNode: false
           }
         );
@@ -347,7 +368,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['email'], 
             Data: {}, 
-            HTML: NodeTemplates.Email,
+            HTML: NodeTemplates.EmailTemplate,
             TypeNode: false
           }
         );
@@ -363,7 +384,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['template'], 
             Data: {}, 
-            HTML: NodeTemplates.Template,
+            HTML: NodeTemplates.TemplateTemplate,
             TypeNode: false
           }
         );
@@ -379,7 +400,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['multiple'], 
             Data: {}, 
-            HTML: NodeTemplates.Multiple,
+            HTML: NodeTemplates.MultipleTemplate,
             TypeNode: false
           }
         );
@@ -395,7 +416,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['personalized'], 
             Data: {}, 
-            HTML: NodeTemplates.Personalized,
+            HTML: NodeTemplates.PersonalizedTemplate,
             TypeNode: false
           }
         );
@@ -411,7 +432,7 @@ export class RollUpTest extends LitElement {
             PosY: posY, 
             ClassList: ['dbclick'], 
             Data: {}, 
-            HTML: NodeTemplates.DBLClick,
+            HTML: NodeTemplates.DBLClickTemplate,
             TypeNode: false
           }
         );
@@ -436,11 +457,27 @@ export class RollUpTest extends LitElement {
     
   }
 
-  render() {
-    return html `
+  /**
+   * Called after the element’s DOM has been updated the first time, immediately before updated is called.
+   * 
+   * @param changedProperties Map - keys are the names of change properties
+   * Values are the corresponding previous values
+   * 
+   * Property changes inside this method will trigger an element update
+   */
+  protected firstUpdated(changedProperties: any): any {
 
-      <link rel="stylesheet" href="./assets/styles/global-scss.min.css">
+    changedProperties.forEach((oldValue: string, propName: string) => {
+      console.log(`${propName} changed. oldValue: ${oldValue}`);
+    });
 
+    console.log('ROOT', this.Root);
+    this.flowTool = new FlowTool(this.Canvas);
+    this.flowTool.Init(this.FlowData);
+  }
+
+/**
+ * 
       <template id="request">
         <div class="node-drop-shadow">
           <div class="gap flexbox-row request">
@@ -485,6 +522,11 @@ export class RollUpTest extends LitElement {
           </div>
         </div>
       </template>
+ */
+  render() {
+    return html `
+
+      <link rel="stylesheet" href="./assets/styles/global-scss.min.css">
 
     <header>
       <h2>${ this.HeaderTitle }</h2>
@@ -520,16 +562,8 @@ export class RollUpTest extends LitElement {
         </div>
 
         <!-- Flow Tool -->
-        <!--
-        <div 
-          id="drawflow" 
-          @drop="${ (e: DragEvent) => this.dragEvent('drop', e) }" 
-          @dragover="${ (e: DragEvent) => this.dragEvent('dragover', e) }">
-        </div>
-        -->
         <canvas-control 
           id="drawflow"
-          class="drawflow"
           @drop="${ (e: DragEvent) => this.dragEvent('drop', e) }" 
           @dragover="${ (e: DragEvent) => this.dragEvent('dragover', e) }">
 
@@ -541,4 +575,6 @@ export class RollUpTest extends LitElement {
   </div>
     `
   }
+
+
 }
