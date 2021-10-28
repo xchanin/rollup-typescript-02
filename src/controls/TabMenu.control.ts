@@ -1,16 +1,19 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import { FlowTool } from '../base-classes/FlowTool';
+import { ModuleMenuModel } from '../models/menu/module-menu.model.js';
 
 @customElement('tab-menu-control')
 
-export class TabMenControl extends LitElement {
+export class TabMenuControl extends LitElement {
 
     /**
      * Change module function passed in from parent
      */
     @property()
     public ChangeModule: Function;
+
+    @property({ type: Array })
+    public TabItems: Array<ModuleMenuModel>;
 
     constructor() {
         super();
@@ -46,19 +49,20 @@ export class TabMenControl extends LitElement {
         return html 
         `
         <link rel="stylesheet" href="./assets/styles/global-scss.min.css">
+
         <div class="tab-menu">
-          <ul>
-            <li class="selected" @click=${ (ev: Event) => { this.tabItemClicked('NapkinIDE', ev); }}>
-                Napkin IDE Change
-            </li>
-            <li @click=${ (ev: Event) => { this.tabItemClicked('Home', ev); }}>
-                Home
-            </li>
-            <!-- <li onclick="FlowTool.ChangeModule('Test'); 
-                menuTabSelected(event);">
-                Test Module
-            </li> -->
-          </ul>
+            <ul>
+                ${ this.TabItems.map((item: ModuleMenuModel) => {
+                    return html 
+                    `
+                    <li 
+                    class=${ item.Class }
+                    @click=${ (ev: Event) => { this.tabItemClicked(`${ item.Target }`, ev); }}>
+                        ${ item.Label }
+                    </li>
+                    `
+                }) }
+            </ul>
         </div>
         `
     }

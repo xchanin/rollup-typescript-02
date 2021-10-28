@@ -34,6 +34,12 @@
       // ConstantUtils.OTHER_MODULE_DATA
       
     ];
+
+    const TabMenuItems = [
+      { Label: 'Napkin IDE', Target: 'NapkinIDE', Class: 'selected' },
+      { Label: 'Home', Target: 'Home' }
+    ];
+
     const title = 'Hello World!';
 
     VariablesUtils.NodeClass = 'fathym-node';
@@ -45,6 +51,7 @@
           HeaderTitle = "Data Flow Tools"
           .FlowData = ${ VariablesUtils.DataFlowModuleData[0] } 
           .SideMenuItems = ${ DragItemsTemplates.FLOW_DRAG_ITEMS(DragDropUtils.Test) }
+          .TabMenuItems = ${ TabMenuItems }
           .title = ${ title }>
           some light-dom
         </roll-up-test>

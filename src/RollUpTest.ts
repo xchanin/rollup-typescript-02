@@ -1,12 +1,13 @@
 import { html, LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { query } from 'lit/decorators/query.js';
-import { DataFlowDataModel } from './models/dataflow-data.model';
-import { FlowTool } from './base-classes/FlowTool';
-import { VariablesUtils } from './utils/variables.utils';
-import { DragDropUtils } from './utils/drag-drop.utils';
-import { PositionUtils } from './utils/position.utils';
-import { NodeTemplates } from './templates/node-templates';
+import { DataFlowDataModel } from './models/dataflow-data.model.js';
+import { FlowTool } from './base-classes/FlowTool.js';
+import { VariablesUtils } from './utils/variables.utils.js';
+import { DragDropUtils } from './utils/drag-drop.utils.js';
+import { PositionUtils } from './utils/position.utils.js';
+import { NodeTemplates } from './templates/node-templates.js';
+import { ModuleMenuModel } from './models/menu/module-menu.model.js';
 export class RollUpTest extends LitElement {
   
   @property({ type: Number }) 
@@ -42,6 +43,9 @@ export class RollUpTest extends LitElement {
 
   @property({ type: Array })
   public SideMenuItems: Array<any>
+
+  @property({ type: Array })
+  protected TabMenuItems: Array<ModuleMenuModel>;
 
   @query("#tab-menu")
   public TabMenu: HTMLElement;
@@ -506,6 +510,7 @@ export class RollUpTest extends LitElement {
         <!--Tab Menu-->
         <tab-menu-control 
           id="tab-menu"
+          .TabItems=${ this.TabMenuItems }
           .ChangeModule=${ this.flowTool.ChangeModule.bind(this.flowTool) }>
         </tab-menu-control>
 
