@@ -2,7 +2,7 @@ import { html, LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { query } from 'lit/decorators/query.js';
 import { DataFlowDataModel } from './models/dataflow-data.model';
-import { FlowTool } from './controls/FlowTool';
+import { FlowTool } from './base-classes/FlowTool';
 import { VariablesUtils } from './utils/variables.utils';
 import { DragDropUtils } from './utils/drag-drop.utils';
 import { PositionUtils } from './utils/position.utils';
@@ -20,7 +20,7 @@ export class RollUpTest extends LitElement {
   
   @state()
   private _flowData: DataFlowDataModel;
-  // public FlowData: DataFlowDataModel;
+
   @property({ type: DataFlowDataModel }) 
   public set FlowData(val: DataFlowDataModel) {
     this._flowData = val;
@@ -42,6 +42,9 @@ export class RollUpTest extends LitElement {
 
   @property({ type: Array })
   public SideMenuItems: Array<any>
+
+  @query("#tab-menu")
+  public TabMenu: HTMLElement;
 
   @property({ type: String }) 
   public Title: string;
@@ -476,57 +479,12 @@ export class RollUpTest extends LitElement {
     this.flowTool.Init(this.FlowData);
   }
 
-/**
- * 
-      <template id="request">
-        <div class="node-drop-shadow">
-          <div class="gap flexbox-row request">
-              <span df-Name></span>
-              <input type="text" df-Host>
-              <a href="#" df-Host></a>
-          </div>
-        </div>
-      </template>
 
-      <template id="request-template">
-        <div class="node-drop-shadow">
-          <div class="request">
-              <span>Request</span>
-          </div>
-        </div>
-      </template>
 
-      <template id="project-template">
-        <div class="node-drop-shadow">
-          <div class="project gap flexbox-row flexbox-base">
-              <span style="text-align: center" df-Name></span>
-              <a href="#" df-Host style="color: white; text-align: center"></a>
-          </div>
-        </div>
-      </template>
-
-      <template id="route-template">
-        <div class="node-drop-shadow">
-          <div class="filter">
-              <span>Filter</span>
-          </div>
-        </div>
-      </template>
-
-      <template id="application-template">
-        <div class="node-drop-shadow">
-          <div class="application">
-            <div class="flexbox-base" style="height: 100px">
-              <span>Application</span>
-            </div>
-          </div>
-        </div>
-      </template>
- */
   render() {
     return html `
 
-      <link rel="stylesheet" href="./assets/styles/global-scss.min.css">
+    <link rel="stylesheet" href="./assets/styles/global-scss.min.css">
 
     <header>
       <h2>${ this.HeaderTitle }</h2>
@@ -544,22 +502,12 @@ export class RollUpTest extends LitElement {
       </drag-menu-items>
 
       <div class="col-right">
-        <div class="tab-menu">
-          <ul>
-            <li onclick="FlowTool.ChangeModule('NapkinIDE'); 
-              menuTabSelected(event);" class="selected">
-              Napkin IDE Change
-            </li>
-            <li onclick="FlowTool.ChangeModule('Home'); 
-                menuTabSelected(event);">
-              Test Module
-            </li>
-            <!-- <li onclick="FlowTool.ChangeModule('Test'); 
-                menuTabSelected(event);">
-                Test Module
-            </li> -->
-          </ul>
-        </div>
+
+        <!--Tab Menu-->
+        <tab-menu-control 
+          id="tab-menu"
+          .ChangeModule=${ this.flowTool.ChangeModule.bind(this.flowTool) }>
+        </tab-menu-control>
 
         <!-- Flow Tool -->
         <canvas-control 

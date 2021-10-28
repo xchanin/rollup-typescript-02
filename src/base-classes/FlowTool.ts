@@ -1,7 +1,7 @@
-import { IdsUtils } from './../utils/ids.utils.js';
-import { NodeModel } from './../models/nodes/node.model.js';
+import { IdsUtils } from '../utils/ids.utils.js';
+import { NodeModel } from '../models/nodes/node.model.js';
 import { VariablesUtils } from '../utils/variables.utils.js';
-import { DataFlowBaseClass } from '../base-classes/data-flow-base-class.js';
+import { DataFlowBaseClass } from './data-flow-base-class.js';
 import { DataFlowDataModel } from '../models/dataflow-data.model.js';
 import { ContainerEvent } from '../models/nodes/container-event.model.js';
 import { EventsUtils } from '../utils/events.utils.js';

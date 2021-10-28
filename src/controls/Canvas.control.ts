@@ -1,7 +1,5 @@
-import { ThemeUtils } from './../utils/themes/Theme.utils';
-import { html, css, LitElement } from 'lit';
+import { html, LitElement, TemplateResult } from 'lit';
 import { customElement } from 'lit/decorators.js';
-// import globalStyles from '../../assets/styles/css/sjs/'
 
 @customElement('canvas-control')
 
@@ -11,7 +9,7 @@ export class CanvasControl extends LitElement {
         super();
     }
 
-    public render(): any {
+    public render(): TemplateResult {
         return html 
         `
         <div id="drawflow" class="drawflow">
