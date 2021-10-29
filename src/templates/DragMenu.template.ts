@@ -11,7 +11,14 @@ export class DragMenuItems extends LitElement {
 
     @property({ type: Array }) 
     public set MenuItems(value: Array<MenuTemplateModel>) {
-  
+        
+        /**
+         * Check if value actually changed
+         */
+        if (this._menuItems === value) {
+            return;
+        }
+
         // https://www.thisdot.co/blog/how-to-observe-property-changes-with-litelement-and-typescript
         const oldValue = this._menuItems;
         // console.log(`set MenuItems, oldValue: ${ this._menuItems }, newValue: ${ value }`);

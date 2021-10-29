@@ -495,7 +495,7 @@ export class RollUpTest extends LitElement {
       <drag-menu-items 
         id="drag-items" 
         class="col"
-        .MenuItems=${ this.SideMenuItems }>
+        .MenuItems="${ this.SideMenuItems }">
       </drag-menu-items>
 
       <div class="col-right">
@@ -515,8 +515,9 @@ export class RollUpTest extends LitElement {
           @drop="${ (e: DragEvent) => this.dragEvent('drop', e) }" 
           @dragover="${ (e: DragEvent) => this.dragEvent('dragover', e) }">
 
-          <p>This is the Canvas</p>
-
+          <!--Without this the connection lines don't work-->
+          <p>Canvas</p>
+          
         </canvas-control>
       </div>
     </div>

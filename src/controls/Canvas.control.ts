@@ -12,8 +12,14 @@ export class CanvasControl extends LitElement {
     public render(): TemplateResult {
         return html 
         `
-        <div id="drawflow" class="drawflow">
+        <div>
             <slot></slot>
+
+            <!--
+                ex.
+                Can use name to target specific slots
+                <slot name="canvas"></slot>
+            -->
         </div>
         `
     }
