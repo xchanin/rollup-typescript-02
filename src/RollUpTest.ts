@@ -19,7 +19,6 @@ export class RollUpTest extends LitElement {
   @query('#drag-items')
   public DragItems: HTMLElement;
   
-  @state()
   private _flowData: DataFlowDataModel;
 
   @property({ type: DataFlowDataModel }) 
@@ -37,12 +36,12 @@ export class RollUpTest extends LitElement {
   @property({ type: String })
   public HeaderTitle: string;
 
-  public get Root(): ShadowRoot | RollUpTest {
+  protected get root(): ShadowRoot | RollUpTest {
     return this.shadowRoot || this;
   }
 
   @property({ type: Array })
-  public SideMenuItems: Array<any>
+  public SideMenuItems: Array<any>;
 
   @property({ type: Array })
   protected TabMenuItems: Array<ModuleMenuModel>;
@@ -79,10 +78,6 @@ export class RollUpTest extends LitElement {
     
     this.Title = 'This is a component';
     this.Counter = 5;
-  }
-
-  __increment() {
-    this.Counter += 1;
   }
 
   protected addNodeToDrawFlow(name: string, x: number, y: number): any {
@@ -475,15 +470,13 @@ export class RollUpTest extends LitElement {
   protected firstUpdated(changedProperties: any): any {
 
     changedProperties.forEach((oldValue: string, propName: string) => {
-      console.log(`${propName} changed. oldValue: ${oldValue}`);
+      // console.log(`${propName} changed. oldValue: ${oldValue}`);
     });
 
-    console.log('ROOT', this.Root);
+    // console.log('ROOT', this.Root);
     this.flowTool = new FlowTool(this.Canvas);
     this.flowTool.Init(this.FlowData);
   }
-
-
 
   render() {
     return html `
@@ -511,10 +504,12 @@ export class RollUpTest extends LitElement {
         <tab-menu-control 
           id="tab-menu"
           .TabItems=${ this.TabMenuItems }
-          .ChangeModule=${ this.flowTool.ChangeModule.bind(this.flowTool) }>
+          .ChangeModuleEvent=${ this.flowTool.ChangeModule.bind(this.flowTool) }>
         </tab-menu-control>
 
-        <!-- Flow Tool -->
+        <!-- 
+          Canvas Area
+         -->
         <canvas-control 
           id="drawflow"
           @drop="${ (e: DragEvent) => this.dragEvent('drop', e) }" 

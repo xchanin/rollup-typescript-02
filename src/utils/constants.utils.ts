@@ -252,8 +252,6 @@ export class ConstantUtils {
         return edge.Outputs
       });
 
-      console.log('CONSTANT TEMPLATE');
-
       // HTML: <string>document.getElementById(<string>config.HTMLTemplateID)?.innerHTML
 
       return <NodeModel> {

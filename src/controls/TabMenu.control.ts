@@ -9,9 +9,12 @@ export class TabMenuControl extends LitElement {
     /**
      * Change module function passed in from parent
      */
-    @property()
-    public ChangeModule: Function;
+    @property({ type: Function })
+    public ChangeModuleEvent: Function;
 
+    /**
+     * Tab items
+     */
     @property({ type: Array })
     public TabItems: Array<ModuleMenuModel>;
 
@@ -41,7 +44,7 @@ export class TabMenuControl extends LitElement {
      * @param e 
      */
     protected tabItemClicked(module: string, e: Event): void {
-        this.ChangeModule(module);
+        this.ChangeModuleEvent(module);
         this.menuTabSelected(e);
     }
 
