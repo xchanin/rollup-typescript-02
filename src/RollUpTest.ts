@@ -1,3 +1,7 @@
+/**
+ * TODO: figure out why setter is being called twice - MenuItems
+ */
+
 import { html, LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { query } from 'lit/decorators/query.js';
@@ -445,6 +449,8 @@ export class RollUpTest extends LitElement {
   }
 
   protected dragEvent(eventType: string, e: DragEvent): void {
+    
+    console.log('DragEvent');
 
     switch(eventType) {
       case 'drop':

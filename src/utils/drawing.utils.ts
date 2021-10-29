@@ -10,7 +10,7 @@ export class DrawingUtils {
    * @param callback function to callback
    */
     public static DrawConnection(ele: any, callback: (val: string, output: {}) => void): void {
-
+      console.log('DrawConnection');
       /**
        * Create connection SVG element
        */
@@ -97,6 +97,9 @@ export class DrawingUtils {
       }
 
     public static UpdateConnection(eX: number, eY: number): void {
+
+      console.log('UpdateConnection');
+      
         const precanvas = variables.PreCanvas;
         const zoom = variables.Zoom;
         let precanvasWitdhZoom = precanvas.clientWidth / (precanvas.clientWidth * zoom);

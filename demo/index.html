@@ -50,7 +50,7 @@
         <roll-up-test 
           HeaderTitle = "Data Flow Tools"
           .FlowData = ${ VariablesUtils.DataFlowModuleData[0] } 
-          .SideMenuItems = ${ DragItemsTemplates.FLOW_DRAG_ITEMS() }
+          .SideMenuItems = ${ DragItemsTemplates.FLOW_DRAG_ITEMS(DragDropUtils.Drag) }
           .TabMenuItems = ${ TabMenuItems }
           .title = ${ title }>
           some light-dom

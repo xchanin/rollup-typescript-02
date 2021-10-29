@@ -29,8 +29,8 @@ export class DragMenuItems extends LitElement {
          */
         this.requestUpdate("MenuItems", oldValue);
 
-    //    console.count('RENDER MENU ITEMS');
-    //    console.log('VALUE', value);
+        // console.count('RENDER MENU ITEMS');
+        // console.log('VALUE', value);
        MenuTemplatesUtils.Render(
          this, 
          value

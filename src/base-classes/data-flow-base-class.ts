@@ -307,6 +307,7 @@ export class DataFlowBaseClass extends BaseFunctions {
      * @returns ?
      */
     public Click(event: any): any {
+      console.log('CLICK');
  
       const target: Element = event.target;
 
