@@ -1,9 +1,11 @@
+import { CanvasControl } from './controls/Canvas.control';
+import { EventsUtils } from './utils/events.utils';
 /**
  * TODO: figure out why setter is being called twice - MenuItems
  */
 
 import { html, LitElement } from 'lit';
-import { property, state } from 'lit/decorators.js';
+import { property, queryAsync, state } from 'lit/decorators.js';
 import { query } from 'lit/decorators/query.js';
 import { DataFlowDataModel } from './models/dataflow-data.model.js';
 import { FlowTool } from './base-classes/FlowTool.js';
@@ -18,7 +20,10 @@ export class RollUpTest extends LitElement {
   public Counter: number;
 
   @query('#drawflow')
-  public Canvas: HTMLElement;
+  public Canvas!: HTMLElement;
+
+  @queryAsync('#drawflow')
+  public CanvasAsync!: CanvasControl;
 
   @query('#drag-items')
   public DragItems: HTMLElement;
@@ -29,6 +34,7 @@ export class RollUpTest extends LitElement {
   public set FlowData(val: DataFlowDataModel) {
     this._flowData = val;
 
+    // alert('FlowData');
     // this.flowTool = new FlowTool(this.Canvas);
     // this.flowTool.Init(val);
   }
@@ -66,8 +72,23 @@ export class RollUpTest extends LitElement {
   @state()
   protected flowTool: any;
 
+  // protected flowTool: FlowTool;
+
   constructor() {
     super();
+
+    setTimeout(() => {
+      alert('Constructor');
+      console.log('CanvasAsync', this.CanvasAsync);
+    }, 3000);
+    
+    /**
+     * Trying to make thing rerender when the module changes
+     */
+    EventsUtils.OnEvent('moduleChanged', () => {
+      alert('MODUEL CHANGED');
+     // this.requestUpdate();
+    })
 
     // this.renderComplete.then(() => {
 
@@ -78,7 +99,7 @@ export class RollUpTest extends LitElement {
      * Set default value - overridden with passed in value
      */
     // this.canvas = document.getElementById("drawflow");
-    this.flowTool = new FlowTool(this.Canvas);
+    // this.flowTool = new FlowTool(this.Canvas);
     
     this.Title = 'This is a component';
     this.Counter = 5;
@@ -480,10 +501,23 @@ export class RollUpTest extends LitElement {
     });
 
     // console.log('ROOT', this.Root);
-    this.flowTool = new FlowTool(this.Canvas);
+    // this.flowTool = new FlowTool(this.Canvas);
     this.flowTool.Init(this.FlowData);
   }
 
+  public connectedCallback(): void {
+    setTimeout(() => {
+      alert('connectedCallback');
+      console.log('Canvas', this.Canvas);
+    }, 1000);
+  }
+
+  /**
+   * Return a lit-html `TemplateResult`.
+   *
+   * To create a `TemplateResult`, tag a JavaScript template literal
+   * with the `html` helper function.
+   */
   render() {
     return html `
 
@@ -521,7 +555,7 @@ export class RollUpTest extends LitElement {
           @drop="${ (e: DragEvent) => this.dragEvent('drop', e) }" 
           @dragover="${ (e: DragEvent) => this.dragEvent('dragover', e) }">
 
-          <!--Without this the connection lines don't work-->
+          <!--Without this, the connection lines don't work-->
           <p>Canvas</p>
           
         </canvas-control>

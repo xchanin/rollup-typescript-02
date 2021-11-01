@@ -9,6 +9,10 @@ export class CanvasControl extends LitElement {
         super();
     }
 
+    public Test(): void {
+        alert('Inside canvas control');
+    }
+
     public render(): TemplateResult {
         return html 
         `
