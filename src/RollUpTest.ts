@@ -99,7 +99,7 @@ export class RollUpTest extends LitElement {
      * Set default value - overridden with passed in value
      */
     // this.canvas = document.getElementById("drawflow");
-    // this.flowTool = new FlowTool(this.Canvas);
+    this.flowTool = new FlowTool(this.Canvas);
     
     this.Title = 'This is a component';
     this.Counter = 5;
@@ -496,21 +496,22 @@ export class RollUpTest extends LitElement {
    */
   protected firstUpdated(changedProperties: any): any {
 
+    alert('FirstUpdated');
     changedProperties.forEach((oldValue: string, propName: string) => {
       // console.log(`${propName} changed. oldValue: ${oldValue}`);
     });
 
     // console.log('ROOT', this.Root);
-    // this.flowTool = new FlowTool(this.Canvas);
+    this.flowTool = new FlowTool(this.Canvas);
     this.flowTool.Init(this.FlowData);
   }
 
-  public connectedCallback(): void {
-    setTimeout(() => {
-      alert('connectedCallback');
-      console.log('Canvas', this.Canvas);
-    }, 1000);
-  }
+  // public connectedCallback(): void {
+  //   setTimeout(() => {
+  //     alert('connectedCallback');
+  //     console.log('Canvas', this.Canvas);
+  //   }, 1000);
+  // }
 
   /**
    * Return a lit-html `TemplateResult`.
