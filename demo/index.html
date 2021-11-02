@@ -48,11 +48,10 @@
     render(
       html`
         <roll-up-test 
-          HeaderTitle = "Data Flow Tools"
+          .HeaderTitle = ${ title }
           .FlowData = ${ VariablesUtils.DataFlowModuleData[0] } 
           .SideMenuItems = ${ DragItemsTemplates.FLOW_DRAG_ITEMS(DragDropUtils.Drag) }
-          .TabMenuItems = ${ TabMenuItems }
-          .title = ${ title }>
+          .TabMenuItems = ${ TabMenuItems }>
           some light-dom
         </roll-up-test>
       `,

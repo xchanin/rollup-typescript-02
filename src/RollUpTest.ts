@@ -33,10 +33,6 @@ export class RollUpTest extends LitElement {
   @property({ type: DataFlowDataModel }) 
   public set FlowData(val: DataFlowDataModel) {
     this._flowData = val;
-
-    // alert('FlowData');
-    // this.flowTool = new FlowTool(this.Canvas);
-    // this.flowTool.Init(val);
   }
 
   public get FlowData(): DataFlowDataModel {
@@ -67,21 +63,13 @@ export class RollUpTest extends LitElement {
    * part of the component's API. Typically marked protected or private
    */
   // @state()
-  // protected canvas: HTMLElement;
-  
-  @state()
-  protected flowTool: any;
+  protected flowTool: FlowTool;
 
-  // protected flowTool: FlowTool;
+  protected fuckOffEhh: boolean;
 
   constructor() {
     super();
 
-    setTimeout(() => {
-      alert('Constructor');
-      console.log('CanvasAsync', this.CanvasAsync);
-    }, 3000);
-    
     /**
      * Trying to make thing rerender when the module changes
      */
@@ -90,19 +78,14 @@ export class RollUpTest extends LitElement {
      // this.requestUpdate();
     })
 
-    // this.renderComplete.then(() => {
-
-    // })
+    alert('constructor');
 
     /**
      * 
      * Set default value - overridden with passed in value
      */
-    // this.canvas = document.getElementById("drawflow");
     this.flowTool = new FlowTool(this.Canvas);
-    
-    this.Title = 'This is a component';
-    this.Counter = 5;
+    this.fuckOffEhh = true;
   }
 
   protected addNodeToDrawFlow(name: string, x: number, y: number): any {
@@ -140,7 +123,7 @@ export class RollUpTest extends LitElement {
           {
             Type: 'project',
             AllowedInputTypes: ['REQUEST'],
-            ID: '222',
+            ID: '2',
             Name: 'project', 
             NumOfInputs: 1, 
             NumOfOutputs: 1, 
@@ -164,6 +147,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '3',
             Name: 'filter', 
             NumOfInputs: 1, 
             NumOfOutputs: 1, 
@@ -180,6 +164,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '3',
             Name: 'application', 
             NumOfInputs: 0, 
             NumOfOutputs: 1, 
@@ -196,6 +181,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '4',
             Name: 'modifier', 
             NumOfInputs: 0, 
             NumOfOutputs: 1, 
@@ -212,6 +198,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '5',
             Name: 'join', 
             NumOfInputs: 1, 
             NumOfOutputs: 2, 
@@ -228,6 +215,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '6',
             Name: 'split', 
             NumOfInputs: 2, 
             NumOfOutputs: 2, 
@@ -244,6 +232,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '7',
             Name: 'decision', 
             NumOfInputs: 1, 
             NumOfOutputs: 1, 
@@ -260,6 +249,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '8',
             Name: 'event', 
             NumOfInputs: 0, 
             NumOfOutputs: 1, 
@@ -276,6 +266,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '9',
             Name: 'facebook', 
             NumOfInputs: 0, 
             NumOfOutputs: 1, 
@@ -292,6 +283,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '10',
             Name: 'slack', 
             NumOfInputs: 1, 
             NumOfOutputs: 0, 
@@ -308,6 +300,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '11',
             Name: 'github', 
             NumOfInputs: 0, 
             NumOfOutputs: 1, 
@@ -324,6 +317,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '12',
             Name: 'telegram', 
             NumOfInputs: 0, 
             NumOfOutputs: 1, 
@@ -340,6 +334,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '13',
             Name: 'aws', 
             NumOfInputs: 0, 
             NumOfOutputs: 1, 
@@ -356,6 +351,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '14',
             Name: 'log', 
             NumOfInputs: 1, 
             NumOfOutputs: 1, 
@@ -372,6 +368,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '15',
             Name: 'google', 
             NumOfInputs: 1, 
             NumOfOutputs: 0, 
@@ -388,6 +385,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '16',
             Name: 'email', 
             NumOfInputs: 1, 
             NumOfOutputs: 0, 
@@ -404,6 +402,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '17',
             Name: 'template', 
             NumOfInputs: 1, 
             NumOfOutputs: 1, 
@@ -420,6 +419,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '18',
             Name: 'multiple', 
             NumOfInputs: 3, 
             NumOfOutputs: 4, 
@@ -436,6 +436,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '19',
             Name: 'personalized', 
             NumOfInputs: 1, 
             NumOfOutputs: 1, 
@@ -452,6 +453,7 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
+            ID: '20',
             Name: 'dbclick', 
             NumOfInputs: 0, 
             NumOfOutputs: 1, 
@@ -497,6 +499,7 @@ export class RollUpTest extends LitElement {
   protected firstUpdated(changedProperties: any): any {
 
     alert('FirstUpdated');
+
     changedProperties.forEach((oldValue: string, propName: string) => {
       // console.log(`${propName} changed. oldValue: ${oldValue}`);
     });
@@ -505,13 +508,6 @@ export class RollUpTest extends LitElement {
     this.flowTool = new FlowTool(this.Canvas);
     this.flowTool.Init(this.FlowData);
   }
-
-  // public connectedCallback(): void {
-  //   setTimeout(() => {
-  //     alert('connectedCallback');
-  //     console.log('Canvas', this.Canvas);
-  //   }, 1000);
-  // }
 
   /**
    * Return a lit-html `TemplateResult`.
