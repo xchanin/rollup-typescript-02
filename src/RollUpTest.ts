@@ -75,15 +75,26 @@ export class RollUpTest extends LitElement {
       alert('MODUEL CHANGED');
      // this.requestUpdate();
     })
-
-    alert('constructor');
+   
 
     /**
+     * TODO: understand why I have to do this
      * 
-     * Set default value - overridden with passed in value
+     * At this point the.Canvas doesn't exist, have to wait for things
+     * to fully render - need to wait from updateComplete for this.Canvas
+     * to be there, but updateComplete doesn't fire unless a property on this
+     * class is updated, which is why I have to set the flowTool first?
      */
-    this.waitForRenderComplete();
     this.flowTool = new FlowTool(this.Canvas);
+
+    /**
+     * Wait for everthing to render, then setup the flow tool
+     */
+    super.updateComplete.then((val: boolean) => {
+      alert('update complete');
+      this.flowTool = new FlowTool(this.Canvas);
+      this.flowTool.Init(this.FlowData);
+    })
     
   }
 
@@ -497,22 +508,11 @@ export class RollUpTest extends LitElement {
    */
   protected firstUpdated(changedProperties: any): void {
 
-    alert('FirstUpdated');
+   // alert('FirstUpdated');
 
     changedProperties.forEach((oldValue: string, propName: string) => {
       // console.log(`${propName} changed. oldValue: ${oldValue}`);
     });
-  }
-
-  /**
-   * Wait for everthing to render, then setup the flow tool
-   */
-  protected waitForRenderComplete(): void {
-    this.updateComplete.then(() => {
-
-      this.flowTool = new FlowTool(this.Canvas);
-      this.flowTool.Init(this.FlowData);
-    })
   }
 
 
@@ -554,14 +554,10 @@ export class RollUpTest extends LitElement {
         <!-- 
           Canvas Area
          -->
-        <canvas-control 
+        <canvas-control
           id="drawflow"
           @drop="${ (e: DragEvent) => this.dragEvent('drop', e) }" 
           @dragover="${ (e: DragEvent) => this.dragEvent('dragover', e) }">
-
-          <!--Without this, the connection lines don't work-->
-          <p>Canvas</p>
-          
         </canvas-control>
       </div>
     </div>
