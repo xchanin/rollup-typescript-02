@@ -65,8 +65,6 @@ export class RollUpTest extends LitElement {
   // @state()
   protected flowTool: FlowTool;
 
-  protected fuckOffEhh: boolean;
-
   constructor() {
     super();
 
@@ -84,8 +82,9 @@ export class RollUpTest extends LitElement {
      * 
      * Set default value - overridden with passed in value
      */
+    this.waitForRenderComplete();
     this.flowTool = new FlowTool(this.Canvas);
-    this.fuckOffEhh = true;
+    
   }
 
   protected addNodeToDrawFlow(name: string, x: number, y: number): any {
@@ -496,18 +495,26 @@ export class RollUpTest extends LitElement {
    * 
    * Property changes inside this method will trigger an element update
    */
-  protected firstUpdated(changedProperties: any): any {
+  protected firstUpdated(changedProperties: any): void {
 
     alert('FirstUpdated');
 
     changedProperties.forEach((oldValue: string, propName: string) => {
       // console.log(`${propName} changed. oldValue: ${oldValue}`);
     });
-
-    // console.log('ROOT', this.Root);
-    this.flowTool = new FlowTool(this.Canvas);
-    this.flowTool.Init(this.FlowData);
   }
+
+  /**
+   * Wait for everthing to render, then setup the flow tool
+   */
+  protected waitForRenderComplete(): void {
+    this.updateComplete.then(() => {
+
+      this.flowTool = new FlowTool(this.Canvas);
+      this.flowTool.Init(this.FlowData);
+    })
+  }
+
 
   /**
    * Return a lit-html `TemplateResult`.
