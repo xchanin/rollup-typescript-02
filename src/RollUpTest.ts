@@ -63,7 +63,7 @@ export class RollUpTest extends LitElement {
    * part of the component's API. Typically marked protected or private
    */
   // @state()
-  protected flowTool: FlowTool;
+  protected flowTool: any;
 
   constructor() {
     super();
@@ -90,7 +90,7 @@ export class RollUpTest extends LitElement {
     /**
      * Wait for everthing to render, then setup the flow tool
      */
-    super.updateComplete.then((val: boolean) => {
+    this.updateComplete.then((val: boolean) => {
       alert('update complete');
       this.flowTool = new FlowTool(this.Canvas);
       this.flowTool.Init(this.FlowData);
@@ -481,13 +481,13 @@ export class RollUpTest extends LitElement {
     }
   }
 
-  protected dragEvent(eventType: string, e: DragEvent): void {
+  protected dragEvent(eventType: string, e: any): void {
     
     console.log('DragEvent');
 
     switch(eventType) {
       case 'drop':
-        DragDropUtils.Drop(e, this.addNodeToDrawFlow);
+        DragDropUtils.Drop(e, this.addNodeToDrawFlow.bind(this));
         e.preventDefault();
         break;
       case 'dragover':
