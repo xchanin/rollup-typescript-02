@@ -13,7 +13,7 @@ export class NodeTemplates {
         `
             <div id="request">
                 <div class="node-drop-shadow">
-                    <div class="gap flexbox-row request">
+                    <div class="gap flexbox-column request">
                         <span df-Name></span>
                         <input type="text" df-Host>
                         <a href="#" df-Host></a>
@@ -34,8 +34,10 @@ export class NodeTemplates {
     public static ApplicationTemplate: string = 
         `
             <div class="node-drop-shadow">
-                <div class="application">
-                    <span>Application</span>
+                <div class="gap flexbox-column application">
+                    <span df-Name></span>
+                    <span df-Package></span>
+                    <span df-Version></span>
                 </div>
             </div>
         `;

@@ -142,7 +142,10 @@ export class RollUpTest extends LitElement {
             PosX: posX,
             PosY: posY,
             ClassList: [],
-            Data: {},
+            Data: {
+              Name: 'Google',
+              Host: 'www.google.com'
+            },
             HTML: NodeTemplates.ProjectTemplate,
             TypeNode: false
           }
@@ -176,7 +179,11 @@ export class RollUpTest extends LitElement {
             PosX: posX,
             PosY: posY,
             ClassList: [],
-            Data: {},
+            Data: { 
+              Name: 'App Test',
+              Package: '@iot-ensemble/public-web',
+              Version: 'latest',
+             },
             HTML: NodeTemplates.ApplicationTemplate,
             TypeNode: false
           }
@@ -518,9 +525,7 @@ export class RollUpTest extends LitElement {
    * with the `html` helper function.
    */
   render() {
-    return this.FlowData
-    ? html `<bold> No Flow Data </bold>`
-    : html `
+    return html `
 
     <link rel="stylesheet" href="./assets/styles/global-scss.min.css">
 

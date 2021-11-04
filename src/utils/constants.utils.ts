@@ -63,6 +63,7 @@ export const TestNapkinIDEFlow: any = {
       ID: '4',
       Type: 'application',
       Data: {
+        Name: 'Application',
         Package: '@iot-ensemble/public-web',
         Version: 'latest',
       },
@@ -170,7 +171,7 @@ export class ConstantUtils {
         },
         HTML: `
                         <div class="node-drop-shadow">
-                            <div class="gap flexbox-row flexbox-base request">
+                            <div class="gap flexbox-column flexbox-base request">
                                 <span style="text-align: center" df-Title></span>
                                 <input style="
                                     padding: 0.2em; 
