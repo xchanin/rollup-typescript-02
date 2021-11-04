@@ -20,7 +20,8 @@ export class MenuTemplatesUtils {
             span.innerHTML = item.Label;
 
             container.appendChild(img);
-            img.appendChild(span);
+            // img.appendChild(span);
+            container.appendChild(span);
     
             el.appendChild(container);
         }

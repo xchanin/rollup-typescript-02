@@ -119,14 +119,28 @@ export class FlowTool extends DataFlowBaseClass {
        /**
         * Container that holds everything
         */
-       const precanvas: HTMLElement | null = document.getElementById('flow-canvas');
+       // const precanvas: HTMLElement | null = document.getElementById('flow-canvas');
+
 
        /**
         * if precanvas already exists, then remove it
         */
-       if (precanvas && precanvas.parentNode) {
-          precanvas.parentNode.removeChild(precanvas);
-       }
+      //  if (precanvas && precanvas.parentNode) {
+      //     precanvas.parentNode.removeChild(precanvas);
+      //  }
+
+      /**
+       * Don't have access to document.getElementById, so remove canvas this way
+       * 
+       * Probably will find a better way to do this, but for now...
+       */
+      const mainContainerChildren: HTMLCollection = VariablesUtils.MainContainer.children;
+      Array.from(mainContainerChildren).forEach((elm: Element) => {
+        if (elm.id === 'flow-canvas') {
+          VariablesUtils.MainContainer.removeChild(elm);
+          VariablesUtils.PreCanvas = null;
+        }
+      })
 
        VariablesUtils.PreCanvas = document.createElement('div');
        VariablesUtils.PreCanvas.setAttribute('id', 'flow-canvas');
@@ -134,7 +148,7 @@ export class FlowTool extends DataFlowBaseClass {
        VariablesUtils.MainContainer.appendChild(VariablesUtils.PreCanvas);
  
      /**
-      * add eventlisteners to the container
+      * add all eventlisteners to the container
       */
       EventsUtils.AddEventListeners(VariablesUtils.MainContainer, this.eventListeners);
  

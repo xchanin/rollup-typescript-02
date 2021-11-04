@@ -69,7 +69,7 @@ export class RollUpTest extends LitElement {
      /**
       * On module change, rerender the canvas with new module data
       * */
-     this.requestUpdate();
+     // this.requestUpdate();
     })
 
     /**
@@ -86,7 +86,7 @@ export class RollUpTest extends LitElement {
      * Wait for everthing to render, then setup the flow tool
      */
     this.updateComplete.then((val: boolean) => {
-      alert('update complete');
+      
       this.flowTool = new FlowTool(this.Canvas);
       this.flowTool.Init(this.FlowData);
     })

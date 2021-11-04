@@ -70,6 +70,15 @@ header a {
     padding-left: 20px;
     cursor: move;
     user-select: none;
+    font-family: var(--theme-font-family);
+    font-weight: bold;
+    transition: 0.5s ease-in-out;
+
+    &:hover {
+        
+        background-color: rgb(128, 128, 128);
+        color: white;
+    }
   }
 
 /**
