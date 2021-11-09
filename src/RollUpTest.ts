@@ -1,69 +1,105 @@
-import { FlowTool } from './controls/FlowTool';
-import { VariablesUtils } from './utils/variables.utils';
+import { EventsUtils } from './utils/events.utils';
 import { html, LitElement } from 'lit';
-import { property, state } from 'lit/decorators.js';
-import { DataFlowDataModel } from './models/dataflow-data.model';
-import { DragDropUtils } from './utils/drag-drop.utils';
-import {query} from 'lit/decorators/query.js';
-import { PositionUtils } from './utils/position.utils';
-import { NodeTemplates } from './templates/node-templates';
+import { property, queryAsync, state } from 'lit/decorators.js';
+import { query } from 'lit/decorators/query.js';
+import { DataFlowDataModel } from './models/dataflow-data.model.js';
+import { FlowTool } from './base-classes/FlowTool.js';
+import { VariablesUtils } from './utils/variables.utils.js';
+import { DragDropUtils } from './utils/drag-drop.utils.js';
+import { PositionUtils } from './utils/position.utils.js';
+import { NodeTemplates } from './templates/node-templates.js';
+import { ModuleMenuModel } from './models/menu/module-menu.model.js';
 export class RollUpTest extends LitElement {
-  
-  @property({ type: Number }) 
-  public Counter: number;
+
+  /**
+   * Get the canvas element
+   *
+   * @query is a decorator to access nodes in the component’s shadow root
+   * equivalant to: this.renderRoot.querySelector('#first');
+   * can't use document.querySelector('#first') in shadow root
+   */
+  @query('#drawflow')
+  public Canvas!: HTMLElement;
 
   @query('#drag-items')
   public DragItems: HTMLElement;
-  
-  @property({ type: DataFlowDataModel }) 
-  public FlowData: DataFlowDataModel;
 
-  // @property({ type: FlowTool })
-  // public FlowTool: FlowTool;
+  private _flowData: DataFlowDataModel;
 
-  @property({ type: String })
-  public HeaderTitle: string;
+  @property({ type: DataFlowDataModel })
+  public set FlowData(val: DataFlowDataModel) {
+    this._flowData = val;
+  }
 
-  @property({ type: Array })
-  public SideMenuItems: Array<any>
-
-  @property({ type: String }) 
-  public Title: string;
+  public get FlowData(): DataFlowDataModel {
+    return this._flowData;
+  }
 
   /**
    * Internal reactive state refers to properties that aren't
    * part of the component's API. Typically marked protected or private
    */
-  @state()
-  protected canvas: HTMLElement;
-  
-  @state()
-  protected flowTool: any;
+  // @state()
+  protected flowTool: FlowTool;
+
+  @property({ type: String })
+  public HeaderTitle: string;
+
+  protected get root(): ShadowRoot | RollUpTest {
+    return this.shadowRoot || this;
+  }
+
+  @property({ type: Array })
+  public SideMenuItems: Array<any>;
+
+  @property({ type: Array })
+  protected TabMenuItems: Array<ModuleMenuModel>;
+
+  @query("#tab-menu")
+  public TabMenu: HTMLElement;
 
   constructor() {
     super();
 
     /**
-     * 
-     * Set default value - overridden with passed in value
+     * Listen for module changed event
      */
-    this.canvas = document.getElementById("drawflow");
-    this.flowTool = new FlowTool(this.canvas);
-    this.Title = 'This is a component';
-    this.Counter = 5;
-  }
+    EventsUtils.OnEvent('moduleChanged', (moduleName: string) => {
 
-  __increment() {
-    this.Counter += 1;
+     /**
+      * On module change, rerender the canvas with new module data
+      * */
+     // this.requestUpdate();
+    })
+
+    /**
+     * TODO: understand why I have to do this
+     *
+     * At this point the.Canvas doesn't exist, have to wait for things
+     * to fully render - need to wait from updateComplete for this.Canvas
+     * to be there, but updateComplete doesn't fire unless a property on this
+     * class is updated, which is why I have to set the flowTool first?
+     */
+    this.flowTool = new FlowTool(this.Canvas);
+
+    /**
+     * Wait for everthing to render, then setup the flow tool
+     */
+    this.updateComplete.then((val: boolean) => {
+      
+      this.flowTool = new FlowTool(this.Canvas);
+      this.flowTool.Init(this.FlowData);
+    })
+
   }
 
   protected addNodeToDrawFlow(name: string, x: number, y: number): any {
-    
+
     if (VariablesUtils.EditorMode === 'fixed') {
       return false;
     }
 
-    let posX = PositionUtils.DraggedNodeEndXPos(x);	
+    let posX = PositionUtils.DraggedNodeEndXPos(x);
     let posY = PositionUtils.DraggedNodeEndYPos(y);
 
     switch (name) {
@@ -73,14 +109,14 @@ export class RollUpTest extends LitElement {
           {
             ID: '1',
             AllowedOutputTypes: ['PROJECT'],
-            Name: 'request', 
-            NumOfInputs: 0, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: [], 
-            Data: {}, 
-            HTML: NodeTemplates.Request,
+            Name: 'request',
+            NumOfInputs: 0,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: [],
+            Data: {},
+            HTML: NodeTemplates.RequestTemplate,
             // HTML: document.getElementById('request').content,
             TypeNode: false
           }
@@ -92,10 +128,10 @@ export class RollUpTest extends LitElement {
           {
             Type: 'project',
             AllowedInputTypes: ['REQUEST'],
-            ID: '222',
-            Name: 'project', 
-            NumOfInputs: 1, 
-            NumOfOutputs: 1, 
+            ID: '2',
+            Name: 'project',
+            NumOfInputs: 1,
+            NumOfOutputs: 1,
             Outputs: {
               "output_1":
               {
@@ -103,11 +139,14 @@ export class RollUpTest extends LitElement {
                       []
               }
             },
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: [], 
-            Data: {}, 
-            HTML: NodeTemplates.Project,
+            PosX: posX,
+            PosY: posY,
+            ClassList: [],
+            Data: {
+              Name: 'Google',
+              Host: 'www.google.com'
+            },
+            HTML: NodeTemplates.ProjectTemplate,
             TypeNode: false
           }
         );
@@ -116,14 +155,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'filter', 
-            NumOfInputs: 1, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: [], 
-            Data: {}, 
-            HTML: NodeTemplates.Filter,
+            ID: '3',
+            Name: 'filter',
+            NumOfInputs: 1,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: [],
+            Data: {},
+            HTML: NodeTemplates.RouteTemplate,
             TypeNode: false
           }
         );
@@ -132,14 +172,19 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'application', 
-            NumOfInputs: 0, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: [], 
-            Data: {}, 
-            HTML: NodeTemplates.Application,
+            ID: '3',
+            Name: 'application',
+            NumOfInputs: 0,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: [],
+            Data: { 
+              Name: 'App Test',
+              Package: '@iot-ensemble/public-web',
+              Version: 'latest',
+             },
+            HTML: NodeTemplates.ApplicationTemplate,
             TypeNode: false
           }
         );
@@ -148,14 +193,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'modifier', 
-            NumOfInputs: 0, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: [], 
-            Data: {}, 
-            HTML: NodeTemplates.Modifier,
+            ID: '4',
+            Name: 'modifier',
+            NumOfInputs: 0,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: [],
+            Data: {},
+            HTML: NodeTemplates.ModifierTemplate,
             TypeNode: false
           }
         );
@@ -164,14 +210,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'join', 
-            NumOfInputs: 1, 
-            NumOfOutputs: 2, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: [], 
-            Data: {}, 
-            HTML: NodeTemplates.Join,
+            ID: '5',
+            Name: 'join',
+            NumOfInputs: 1,
+            NumOfOutputs: 2,
+            PosX: posX,
+            PosY: posY,
+            ClassList: [],
+            Data: {},
+            HTML: NodeTemplates.JoinTemplate,
             TypeNode: false
           }
         );
@@ -180,14 +227,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'split', 
-            NumOfInputs: 2, 
-            NumOfOutputs: 2, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: [], 
-            Data: {}, 
-            HTML: NodeTemplates.Split,
+            ID: '6',
+            Name: 'split',
+            NumOfInputs: 2,
+            NumOfOutputs: 2,
+            PosX: posX,
+            PosY: posY,
+            ClassList: [],
+            Data: {},
+            HTML: NodeTemplates.SplitTemplate,
             TypeNode: false
           }
         );
@@ -196,14 +244,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'decision', 
-            NumOfInputs: 1, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: [], 
-            Data: {}, 
-            HTML: NodeTemplates.Decision,
+            ID: '7',
+            Name: 'decision',
+            NumOfInputs: 1,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: [],
+            Data: {},
+            HTML: NodeTemplates.DecisionTemplate,
             TypeNode: false
           }
         );
@@ -212,14 +261,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'event', 
-            NumOfInputs: 0, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: [], 
-            Data: {}, 
-            HTML: NodeTemplates.Event,
+            ID: '8',
+            Name: 'event',
+            NumOfInputs: 0,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: [],
+            Data: {},
+            HTML: NodeTemplates.EventTemplate,
             TypeNode: false
           }
         );
@@ -228,14 +278,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'facebook', 
-            NumOfInputs: 0, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['facebook'], 
-            Data: {}, 
-            HTML: NodeTemplates.Facebook,
+            ID: '9',
+            Name: 'facebook',
+            NumOfInputs: 0,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['facebook'],
+            Data: {},
+            HTML: NodeTemplates.FacebookTemplate,
             TypeNode: false
           }
         );
@@ -244,30 +295,32 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'slack', 
-            NumOfInputs: 1, 
-            NumOfOutputs: 0, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['slack'], 
-            Data: {}, 
-            HTML: NodeTemplates.Slack,
+            ID: '10',
+            Name: 'slack',
+            NumOfInputs: 1,
+            NumOfOutputs: 0,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['slack'],
+            Data: {},
+            HTML: NodeTemplates.SlackTemplate,
             TypeNode: false
-          }  
+          }
         );
         break;
       case 'github':
         this.flowTool.AddNode
         (
           {
-            Name: 'github', 
-            NumOfInputs: 0, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['github'], 
-            Data: {}, 
-            HTML: NodeTemplates.Github,
+            ID: '11',
+            Name: 'github',
+            NumOfInputs: 0,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['github'],
+            Data: {},
+            HTML: NodeTemplates.GithubTemplate,
             TypeNode: false
           }
         );
@@ -276,14 +329,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'telegram', 
-            NumOfInputs: 0, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['telegram'], 
-            Data: {}, 
-            HTML: NodeTemplates.Telegram,
+            ID: '12',
+            Name: 'telegram',
+            NumOfInputs: 0,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['telegram'],
+            Data: {},
+            HTML: NodeTemplates.TelegramTemplate,
             TypeNode: false
           }
         );
@@ -292,14 +346,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'aws', 
-            NumOfInputs: 0, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['aws'], 
-            Data: {}, 
-            HTML: NodeTemplates.AWS,
+            ID: '13',
+            Name: 'aws',
+            NumOfInputs: 0,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['aws'],
+            Data: {},
+            HTML: NodeTemplates.AWSTemplate,
             TypeNode: false
           }
         );
@@ -308,14 +363,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'log', 
-            NumOfInputs: 1, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['log'], 
-            Data: {}, 
-            HTML: NodeTemplates.Log,
+            ID: '14',
+            Name: 'log',
+            NumOfInputs: 1,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['log'],
+            Data: {},
+            HTML: NodeTemplates.LogTemplate,
             TypeNode: false
           }
         );
@@ -324,14 +380,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'google', 
-            NumOfInputs: 1, 
-            NumOfOutputs: 0, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['google'], 
-            Data: {}, 
-            HTML: NodeTemplates.Google,
+            ID: '15',
+            Name: 'google',
+            NumOfInputs: 1,
+            NumOfOutputs: 0,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['google'],
+            Data: {},
+            HTML: NodeTemplates.GoogleTemplate,
             TypeNode: false
           }
         );
@@ -340,14 +397,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'email', 
-            NumOfInputs: 1, 
-            NumOfOutputs: 0, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['email'], 
-            Data: {}, 
-            HTML: NodeTemplates.Email,
+            ID: '16',
+            Name: 'email',
+            NumOfInputs: 1,
+            NumOfOutputs: 0,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['email'],
+            Data: {},
+            HTML: NodeTemplates.EmailTemplate,
             TypeNode: false
           }
         );
@@ -356,14 +414,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'template', 
-            NumOfInputs: 1, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['template'], 
-            Data: {}, 
-            HTML: NodeTemplates.Template,
+            ID: '17',
+            Name: 'template',
+            NumOfInputs: 1,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['template'],
+            Data: {},
+            HTML: NodeTemplates.TemplateTemplate,
             TypeNode: false
           }
         );
@@ -372,14 +431,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'multiple', 
-            NumOfInputs: 3, 
-            NumOfOutputs: 4, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['multiple'], 
-            Data: {}, 
-            HTML: NodeTemplates.Multiple,
+            ID: '18',
+            Name: 'multiple',
+            NumOfInputs: 3,
+            NumOfOutputs: 4,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['multiple'],
+            Data: {},
+            HTML: NodeTemplates.MultipleTemplate,
             TypeNode: false
           }
         );
@@ -388,14 +448,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'personalized', 
-            NumOfInputs: 1, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['personalized'], 
-            Data: {}, 
-            HTML: NodeTemplates.Personalized,
+            ID: '19',
+            Name: 'personalized',
+            NumOfInputs: 1,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['personalized'],
+            Data: {},
+            HTML: NodeTemplates.PersonalizedTemplate,
             TypeNode: false
           }
         );
@@ -404,14 +465,15 @@ export class RollUpTest extends LitElement {
         this.flowTool.AddNode
         (
           {
-            Name: 'dbclick', 
-            NumOfInputs: 0, 
-            NumOfOutputs: 1, 
-            PosX: posX, 
-            PosY: posY, 
-            ClassList: ['dbclick'], 
-            Data: {}, 
-            HTML: NodeTemplates.DBLClick,
+            ID: '20',
+            Name: 'dbclick',
+            NumOfInputs: 0,
+            NumOfOutputs: 1,
+            PosX: posX,
+            PosY: posY,
+            ClassList: ['dbclick'],
+            Data: {},
+            HTML: NodeTemplates.DBLClickTemplate,
             TypeNode: false
           }
         );
@@ -421,11 +483,13 @@ export class RollUpTest extends LitElement {
     }
   }
 
-  protected dragEvent(eventType: string, e: DragEvent): void {
+  protected dragEvent(eventType: string, e: any): void {
+
+    console.log('DragEvent');
 
     switch(eventType) {
       case 'drop':
-        DragDropUtils.Drop(e, this.addNodeToDrawFlow);
+        DragDropUtils.Drop(e, this.addNodeToDrawFlow.bind(this));
         e.preventDefault();
         break;
       case 'dragover':
@@ -433,111 +497,75 @@ export class RollUpTest extends LitElement {
         e.preventDefault();
         break;
     }
-    
+
   }
 
+  /**
+   * Called after the element’s DOM has been updated the first time, immediately before updated is called.
+   *
+   * @param changedProperties Map - keys are the names of change properties
+   * Values are the corresponding previous values
+   *
+   * Property changes inside this method will trigger an element update
+   */
+  protected firstUpdated(changedProperties: any): void {
+
+   // alert('FirstUpdated');
+
+    changedProperties.forEach((oldValue: string, propName: string) => {
+      // console.log(`${propName} changed. oldValue: ${oldValue}`);
+    });
+  }
+
+
+  /**
+   * Return a lit-html `TemplateResult`.
+   *
+   * To create a `TemplateResult`, tag a JavaScript template literal
+   * with the `html` helper function.
+   */
   render() {
     return html `
 
-      <link rel="stylesheet" href="./assets/styles/global-scss.min.css">
-
-      <template id="request">
-        <div class="node-drop-shadow">
-          <div class="gap flexbox-row request">
-              <span df-Name></span>
-              <input type="text" df-Host>
-              <a href="#" df-Host></a>
-          </div>
-        </div>
-      </template>
-
-      <template id="request-template">
-        <div class="node-drop-shadow">
-          <div class="request">
-              <span>Request</span>
-          </div>
-        </div>
-      </template>
-
-      <template id="project-template">
-        <div class="node-drop-shadow">
-          <div class="project gap flexbox-row flexbox-base">
-              <span style="text-align: center" df-Name></span>
-              <a href="#" df-Host style="color: white; text-align: center"></a>
-          </div>
-        </div>
-      </template>
-
-      <template id="route-template">
-        <div class="node-drop-shadow">
-          <div class="filter">
-              <span>Filter</span>
-          </div>
-        </div>
-      </template>
-
-      <template id="application-template">
-        <div class="node-drop-shadow">
-          <div class="application">
-            <div class="flexbox-base" style="height: 100px">
-              <span>Application</span>
-            </div>
-          </div>
-        </div>
-      </template>
+    <link rel="stylesheet" href="./assets/styles/global-scss.min.css">
 
     <header>
       <h2>${ this.HeaderTitle }</h2>
     </header>
 
     <div class="wrapper">
-    
-      <!-- 
+
+      <!--
         Left side menu items
       -->
-      <drag-menu-items 
-        id="drag-items" 
+      <drag-menu-items
+        id="drag-items"
         class="col"
-        .MenuItems=${ this.SideMenuItems }>
+        .MenuItems="${ this.SideMenuItems }">
       </drag-menu-items>
 
       <div class="col-right">
-        <div class="tab-menu">
-          <ul>
-            <li onclick="FlowTool.ChangeModule('NapkinIDE'); 
-              menuTabSelected(event);" class="selected">
-              Napkin IDE Change
-            </li>
-            <li onclick="FlowTool.ChangeModule('Home'); 
-                menuTabSelected(event);">
-              Test Module
-            </li>
-            <!-- <li onclick="FlowTool.ChangeModule('Test'); 
-                menuTabSelected(event);">
-                Test Module
-            </li> -->
-          </ul>
-        </div>
 
-        <!-- Flow Tool -->
+        <!--Tab Menu-->
+        <tab-menu-control
+          id="tab-menu"
+          .TabItems=${ this.TabMenuItems }
+          .ChangeModuleEvent=${ this.flowTool.ChangeModule.bind(this.flowTool) }>
+        </tab-menu-control>
+
         <!--
-        <div 
-          id="drawflow" 
-          @drop="${ (e: DragEvent) => this.dragEvent('drop', e) }" 
-          @dragover="${ (e: DragEvent) => this.dragEvent('dragover', e) }">
-        </div>
-        -->
-        <canvas-control 
+          Canvas Area
+         -->
+        <canvas-control
           id="drawflow"
-          @drop="${ (e: DragEvent) => this.dragEvent('drop', e) }" 
+          @drop="${ (e: DragEvent) => this.dragEvent('drop', e) }"
           @dragover="${ (e: DragEvent) => this.dragEvent('dragover', e) }">
-
-          <p>This is the Canvas</p>
-          
         </canvas-control>
       </div>
     </div>
   </div>
     `
   }
+
+
 }

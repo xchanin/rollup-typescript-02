@@ -63,6 +63,7 @@
     1201px and more —  Extra large screens, TV
     */
 }
+
 .flexbox-base {
   display: flex;
   justify-content: center;
@@ -95,7 +96,7 @@ html, body {
   background-color: var(--background-color);
 }
 
-.flexbox-row {
+.flexbox-column {
   flex-direction: column;
 }
 

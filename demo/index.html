@@ -5,8 +5,11 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <link rel="stylesheet" href="../assets/styles/global-scss.min.css">
+  <script src="https://kit.fontawesome.com/0b7385f8de.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
+  <!-- <i class="fab fa-facebook"></i> -->
   <div id="demo"></div>
   <script type="module">
     import { html, render } from 'lit';
@@ -25,18 +28,33 @@
     /**
      * Array for storing module data
     */
-    const DefaultData = ConstantUtils.NAPKIN_IDE_MODULE_DATA;
-    const title = 'Hello World!';
+
+    VariablesUtils.DataFlowModuleData =
+    [
+      // ConstantUtils.TEST_MODULE,
+      ConstantUtils.NAPKIN_IDE_MODULE_DATA,
+      ConstantUtils.HOME_MODULE_DATA
+      // ConstantUtils.OTHER_MODULE_DATA
+      
+    ];
+
+    const TabMenuItems = [
+      { Label: 'Napkin IDE', Target: 'NapkinIDE', Class: 'selected' },
+      { Label: 'Home', Target: 'Home' }
+    ];
+
+    const title = 'Flow Tool';
 
     VariablesUtils.NodeClass = 'fathym-node';
-  
+    VariablesUtils.ActiveModule = ConstantUtils.NAPKIN_IDE_MODULE_DATA.Module;
+
     render(
       html`
         <roll-up-test 
-          HeaderTitle = "Data Flow Tools"
-          .FlowData = ${ DefaultData } 
-          .SideMenuItems = ${ DragItemsTemplates.FLOW_DRAG_ITEMS(DragDropUtils.Test) }
-          .title = ${ title }>
+          .HeaderTitle = ${ title }
+          .FlowData = ${ VariablesUtils.DataFlowModuleData[0] } 
+          .SideMenuItems = ${ DragItemsTemplates.FLOW_DRAG_ITEMS(DragDropUtils.Drag) }
+          .TabMenuItems = ${ TabMenuItems }>
           some light-dom
         </roll-up-test>
       `,

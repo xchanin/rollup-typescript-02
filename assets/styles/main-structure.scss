@@ -7,6 +7,7 @@
 /**
 * Main container wrapper
 */
+:host {
 .wrapper {
     width: 100%;
     height: calc(100vh - 67px);
@@ -17,11 +18,11 @@
 * Main canvas where we drag nodes to
 */
 #drawflow {
+    display: flex;
     position: relative;
     width: calc(100vw - 301px);
     height: calc(100% - 50px);
     top: 40px;
-    background: var(--canvas-background-color);
     background-size: 25px 25px;
     
     /*
@@ -69,6 +70,15 @@ header a {
     padding-left: 20px;
     cursor: move;
     user-select: none;
+    font-family: var(--theme-font-family);
+    font-weight: bold;
+    transition: 0.5s ease-in-out;
+
+    &:hover {
+        
+        background-color: rgb(128, 128, 128);
+        color: white;
+    }
   }
 
 /**
@@ -96,6 +106,7 @@ header a {
     cursor: pointer;
 }
 
-.tab-menu ul li.selected {
-    font-weight: bold;
+    .tab-menu ul li.selected {
+        font-weight: bold;
+    }
 }
